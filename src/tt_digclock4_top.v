@@ -117,7 +117,7 @@ module tt_digclock4_top
         ho <= 0; // Reset count to 0
 	else if ((ht == 2 && ho == 4) || ho == 10)
 		ho <= 0; // Reset count to 0
-    end else if (mt == 6 || pb_rise[1])
+    else if (mt == 6 || pb_rise[1])
         ho <= ho + 1; // Increment count
     end
 	//ten ho counter
