@@ -35,7 +35,7 @@ module tt_digclock4_top
     generate
         for (i = 0; i < 2; i = i + 1) begin
             //4bit shift reg 
-            always @(posedge clk_i or negedge rstn_i) begin
+            always @(posedge clk_i, negedge rstn_i) begin
                 if (!rstn_i)
                     pb_sreg[i] <= 0;
                 else begin
@@ -57,7 +57,7 @@ module tt_digclock4_top
     //15 bit counter veriable
     reg [14:0] clkcnt; //3:0 for SIM, 14:0 for REAL TIME
     // 15 bit counter for timing seconds
-    always @(posedge clk_i or negedge rstn_i) begin
+    always @(posedge clk_i, negedge rstn_i) begin
     if (!rstn_i) begin
         clkcnt <= 0; // Reset count to 0
     end else begin
@@ -76,60 +76,68 @@ module tt_digclock4_top
   // 4 bit counters for so mo and ho
     reg [3:0] so, st, mo, mt, ho, ht;
     //so counter
-    always @(posedge clk_i or negedge rstn_i) begin
-    if (!rstn_i || (so == 10)) begin
+    always @(posedge clk_i, negedge rstn_i) begin
+    if (!rstn_i)
+		so <= 0; // Reset count to 0
+	else if (so == 10)
         so <= 0; // Reset count to 0
-    end else if (pps) begin
+    else if (pps)
         so <= so + 1; // Increment count
-        end
     end
 	//ten so counter
-	always @(posedge clk_i or negedge rstn_i) begin
-    if (!rstn_i || (st == 6)) begin
+	always @(posedge clk_i, negedge rstn_i) begin
+    if (!rstn_i)
+		st <= 0; // Reset count to 0
+	else if (st == 6)
         st <= 0; // Reset count to 0
-    end else if (so == 10) begin
+    else if (so == 10)
         st <= st + 1; // Increment count
-        end
     end
     //mo counter
-    always @(posedge clk_i or negedge rstn_i) begin
-    if (!rstn_i || (mo == 10)) begin
+    always @(posedge clk_i, negedge rstn_i) begin
+    if (!rstn_i) 
         mo <= 0; // Reset count to 0
-    end else if (st == 6 || pb_rise[0]) begin
+	else if (mo == 10)
+		mo <= 0; // Reset count to 0
+    else if (st == 6 || pb_rise[0])
         mo <= mo + 1; // Increment count
-        end
     end
 	//ten mo counter
-    always @(posedge clk_i or negedge rstn_i) begin
-    if (!rstn_i || (mt == 6)) begin
-        mt <= 0; // Reset count to 0
-    end else if (mo == 10) begin
+    always @(posedge clk_i, negedge rstn_i) begin
+    if (!rstn_i) 
+	    mt <= 0; // Reset count to 0
+	else if (mt == 6)
+		mt <= 0; // Reset count to 0
+    else if (mo == 10)
         mt <= mt + 1; // Increment count
-        end
     end
     //ho counter
-    always @(posedge clk_i or negedge rstn_i) begin
-    if (!rstn_i || (ht == 2 && ho == 4) || ho == 10) begin
+    always @(posedge clk_i, negedge rstn_i) begin
+    if (!rstn_i)
         ho <= 0; // Reset count to 0
-    end else if (mt == 6 || pb_rise[1]) begin
+	else if ((ht == 2 && ho == 4) || ho == 10)
+		ho <= 0; // Reset count to 0
+    end else if (mt == 6 || pb_rise[1])
         ho <= ho + 1; // Increment count
-        end
     end
 	//ten ho counter
-	always @(posedge clk_i or negedge rstn_i) begin
-    if (!rstn_i || (ht == 2 && ho == 4)) begin
+	always @(posedge clk_i, negedge rstn_i) begin
+    if (!rstn_i)
         ht <= 0; // Reset count to 0
-    end else if (ho == 10) begin
+	else if (ht == 2 && ho == 4)
+		ht <= 0; // Reset count to 0
+    else if (ho == 10)
         ht <= ht + 1; // Increment count
-        end
     end
     
     
     //counter to switch between BCD digits
     reg [2:0] sel;
-    always @(posedge clk_i or negedge rstn_i) begin
-        if (!rstn_i || (sel == 5 && p4digit))
-            sel <= 0;
+    always @(posedge clk_i, negedge rstn_i) begin
+        if (!rstn_i)
+		    sel <= 0;
+		else if (sel == 5 && p4digit)
+			sel <= 0;
         else if (p4digit)
             sel <= sel + 1;
     end
