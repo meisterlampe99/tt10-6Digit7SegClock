@@ -26,7 +26,7 @@ module tt_wrapper (
 
   // All output pins must be assigned. If not used, assign to 0.
   assign uio_out[7:6] = 0;
-  assign uio_oe[7:0]  = 1;
+  assign uio_oe[7:0]  = {8{1'b1}};
 
   // List all unused inputs to prevent warnings
   wire _unused = &{ui_in[7:2], uio_in, 1'b0};
