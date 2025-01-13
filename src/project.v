@@ -2,7 +2,6 @@
  * Copyright (c) 2025 Patrick Lampl
  * SPDX-License-Identifier: Apache-2.0
  */
-
 `default_nettype none
 
 module tt_um_wrapper (
@@ -26,7 +25,7 @@ module tt_um_wrapper (
 
   // All output pins must be assigned. If not used, assign to 0.
   assign uio_out[7:6] = 0;
-  assign uio_oe[7:0]  = {8{1'b1}};
+  assign uio_oe[7:0]  = {8{ena}};
 
   // List all unused inputs to prevent warnings
   wire _unused = &{ui_in[7:2], uio_in, 1'b0};
