@@ -16,7 +16,7 @@ module tt_um_wrapper (
     input  wire       rst_n     // reset_n - low to reset
 );
 
-  tt_digclock3_top #(.SIM(1)) dc3 (
+  tt_digclock3_top #(.SIM(0)) dc3 (
         .clk_i(clk),
         .rstn_i(rst_n),
         .pb_i(ui_in[1:0]),	 //hour inc, min inc
