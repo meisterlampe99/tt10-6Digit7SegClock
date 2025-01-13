@@ -35,7 +35,7 @@ module tt_digclock4_top
     generate
         for (i = 0; i < 2; i = i + 1) begin
             //4bit shift reg 
-            always @(posedge clk_i, negedge rstn_i) begin
+            always @(posedge clk_i or negedge rstn_i) begin
                 if (!rstn_i)
                     pb_sreg[i] <= 0;
                 else begin
@@ -57,7 +57,7 @@ module tt_digclock4_top
     //15 bit counter veriable
     reg [14:0] clkcnt; //3:0 for SIM, 14:0 for REAL TIME
     // 15 bit counter for timing seconds
-    always @(posedge clk_i, negedge rstn_i) begin
+    always @(posedge clk_i or negedge rstn_i) begin
     if (!rstn_i) begin
         clkcnt <= 0; // Reset count to 0
     end else begin
@@ -76,7 +76,7 @@ module tt_digclock4_top
   // 4 bit counters for so mo and ho
     reg [3:0] so, st, mo, mt, ho, ht;
     //so counter
-    always @(posedge clk_i, negedge rstn_i) begin
+    always @(posedge clk_i or negedge rstn_i) begin
     if (!rstn_i || (so == 10)) begin
         so <= 0; // Reset count to 0
     end else if (pps) begin
@@ -84,7 +84,7 @@ module tt_digclock4_top
         end
     end
 	//ten so counter
-	always @(posedge clk_i, negedge rstn_i) begin
+	always @(posedge clk_i or negedge rstn_i) begin
     if (!rstn_i || (st == 6)) begin
         st <= 0; // Reset count to 0
     end else if (so == 10) begin
@@ -92,7 +92,7 @@ module tt_digclock4_top
         end
     end
     //mo counter
-    always @(posedge clk_i, negedge rstn_i) begin
+    always @(posedge clk_i or negedge rstn_i) begin
     if (!rstn_i || (mo == 10)) begin
         mo <= 0; // Reset count to 0
     end else if (st == 6 || pb_rise[0]) begin
@@ -100,7 +100,7 @@ module tt_digclock4_top
         end
     end
 	//ten mo counter
-    always @(posedge clk_i, negedge rstn_i) begin
+    always @(posedge clk_i or negedge rstn_i) begin
     if (!rstn_i || (mt == 6)) begin
         mt <= 0; // Reset count to 0
     end else if (mo == 10) begin
@@ -108,7 +108,7 @@ module tt_digclock4_top
         end
     end
     //ho counter
-    always @(posedge clk_i, negedge rstn_i) begin
+    always @(posedge clk_i or negedge rstn_i) begin
     if (!rstn_i || (ht == 2 && ho == 4) || ho == 10) begin
         ho <= 0; // Reset count to 0
     end else if (mt == 6 || pb_rise[1]) begin
@@ -116,7 +116,7 @@ module tt_digclock4_top
         end
     end
 	//ten ho counter
-	always @(posedge clk_i, negedge rstn_i) begin
+	always @(posedge clk_i or negedge rstn_i) begin
     if (!rstn_i || (ht == 2 && ho == 4)) begin
         ht <= 0; // Reset count to 0
     end else if (ho == 10) begin
@@ -127,7 +127,7 @@ module tt_digclock4_top
     
     //counter to switch between BCD digits
     reg [2:0] sel;
-    always @(posedge clk_i, negedge rstn_i) begin
+    always @(posedge clk_i or negedge rstn_i) begin
         if (!rstn_i || (sel == 5 && p4digit))
             sel <= 0;
         else if (p4digit)
