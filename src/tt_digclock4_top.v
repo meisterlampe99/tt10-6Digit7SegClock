@@ -18,8 +18,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-module tt_digclock3_top 
-    #(parameter SIM = 0) (
+module tt_digclock4_top 
+    (
     input wire clk_i,
     input wire rstn_i,
     input wire [1:0] pb_i,
@@ -55,9 +55,9 @@ module tt_digclock3_top
     endgenerate
     
     //15 bit counter veriable
-    reg [(14-11*SIM):0] clkcnt; //3:0 for SIM, 14:0 for REAL TIME
+    reg [14:0] clkcnt; //3:0 for SIM, 14:0 for REAL TIME
     // 15 bit counter for timing seconds
-    always @(posedge clk_i or negedge rstn_i) begin
+    always @(posedge clk_i, negedge rstn_i) begin
     if (!rstn_i) begin
         clkcnt <= 0; // Reset count to 0
     end else begin
@@ -68,9 +68,9 @@ module tt_digclock3_top
     // comparators for strobes
     reg pps;
     // pulse per second strobe gen
-    always @* begin if (clkcnt == 2**(15-11*SIM)-1) pps = 1; else pps = 0; end //2^4-1 for SIM, 2^15 for REAL TIME 
+    always @* begin if (clkcnt == 2**15-1) pps = 1; else pps = 0; end //2^4-1 for SIM, 2^15 for REAL TIME 
     // pulse per ~3.25ms for muxing segments
-    always @* begin if (clkcnt[(5-5*SIM):0] == 2**(6-5*SIM)-1) p4digit = 1; else p4digit = 0; end //0:0 and 2^1-1 for SIM, 5:0 and 2^6-1 for REAL TIME
+    always @* begin if (clkcnt[5:0] == 2**6-1) p4digit = 1; else p4digit = 0; end //0:0 and 2^1-1 for SIM, 5:0 and 2^6-1 for REAL TIME
     
     
   // 4 bit counters for so mo and ho
@@ -185,9 +185,9 @@ end
     case(sel)
         3'b000: dot = 1'b1; //so
         3'b001: dot = 1'b1; //st
-        3'b010: dot = clkcnt[14-11*SIM]; //mo add MSB of sec counter
+        3'b010: dot = clkcnt[14]; //mo add MSB of sec counter, 3 for SIM 14 for REAL time
         3'b011: dot = 1'b1; //mt
-        3'b100: dot = ~clkcnt[14-11*SIM]; //ho add inv MSB of sec counter
+        3'b100: dot = ~clkcnt[14]; //ho add inv MSB of sec counter, 3 for SIM 14 for REAL time
         3'b101: dot = 1'b1; //ht
        default: dot = 1'b1;// Default or invalid case
     endcase
