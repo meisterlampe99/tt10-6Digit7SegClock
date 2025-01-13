@@ -18,7 +18,7 @@ module tt_wrapper (
 
   tt_digclock3_top #(.SIM(1)) dc3 (
         .clk_i(clk),
-        .rstn_i(rstn),
+        .rstn_i(rst_n),
         .pb_i(ui_in[1:0]),	 //hour inc, min inc
         .seg_o(uo_out[7:0]), //segment format dot,a,b,c,d,e,f,g
         .sel_o(uio_out[5:0]) //digit select format: hhmmss
