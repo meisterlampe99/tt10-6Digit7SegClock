@@ -1,29 +1,30 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
-  author:       ""      # Your name
+  title:        "6Digit7SegClock"      # Project title
+  author:       "Patrick Lampl"      # Your name
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
+  description:  "A digital clock multiplexed to a 6 digit 7 segment display"      # One line description of what your project does
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
-  clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
+  clock_hz:     32768       # Clock frequency in Hz (or 0 if not applicable)
 
   # How many tiles your design occupies? A single tile is about 167x108 uM.
   tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_example"
+  top_module:  "tt_wrapper"
 
   # List your project's source files here.
   # Source files must be in ./src and you must list each source file separately, one per line.
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
     - "project.v"
+    - "tt_digclock3_top.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   # Inputs
-  ui[0]: ""
-  ui[1]: ""
+  ui[0]: "minutes increment pushbutton"
+  ui[1]: "hours increment pushbutton"
   ui[2]: ""
   ui[3]: ""
   ui[4]: ""
@@ -32,22 +33,22 @@ pinout:
   ui[7]: ""
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
-  uo[5]: ""
-  uo[6]: ""
-  uo[7]: ""
+  uo[0]: "display segment g"
+  uo[1]: "display segment f"
+  uo[2]: "display segment e"
+  uo[3]: "display segment d"
+  uo[4]: "display segment c"
+  uo[5]: "display segment b"
+  uo[6]: "display segment a"
+  uo[7]: "display segment dot"
 
   # Bidirectional pins
-  uio[0]: ""
-  uio[1]: ""
-  uio[2]: ""
-  uio[3]: ""
-  uio[4]: ""
-  uio[5]: ""
+  uio[0]: "display digit enable second ones"
+  uio[1]: "display digit enable second tens"
+  uio[2]: "display digit enable minute ones"
+  uio[3]: "display digit enable minute tens"
+  uio[4]: "display digit enable hour ones"
+  uio[5]: "display digit enable hour tens"
   uio[6]: ""
   uio[7]: ""
 
