@@ -14,6 +14,8 @@
 // Revision 1.0 - first working version for sim and synthesis
 // Revision 1.1 - more FF no bin2BCD convertion
 // Revision 1.2 - less comparisions but up to 6 cycle overflow latency
+// Revision 1.3	- fixed a few bugs, removed SIM parameter
+// Revision 1.4 - separated async reset and functional reset
 // 
 //////////////////////////////////////////////////////////////////////////////////
 
@@ -27,7 +29,7 @@ module tt_digclock4_top
     output reg [5:0] sel_o
     );
     
-    reg p4digit; //pulse every ~4ms
+    reg p4digit; //pulse every ~3.25ms
      //input sync, downsample for debouncing and rising edge detection
     reg [3:0] pb_sreg [0:1]; //array of pushbutton vector
     reg [1:0] pb_rise ; //vector for pushbutton rising edge strobes
@@ -41,7 +43,7 @@ module tt_digclock4_top
                 else begin
                     //shift LSBs at every clock cycle
                     pb_sreg[i][1:0] <= {pb_sreg[i][0], pb_i[i]};
-                    //shift bit 2 only when enabled by p4digit every ~4ms
+                    //shift bit 2 only when enabled by p4digit every ~3.25ms
                     if (p4digit) pb_sreg[i][2] <= pb_sreg[i][1]; 
                     //shift MSB always at clock speed
                     pb_sreg[i][3] <= pb_sreg[i][2];

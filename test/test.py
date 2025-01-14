@@ -24,22 +24,46 @@ async def test_project(dut):
     dut.rst_n.value = 1
 
     dut._log.info("Test project behavior")
-
-    # Set the input values you want to test
-    dut.ui_in.value = 3 #increment hours and minutes once
-
-    # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk, 10)
-
-    dut.ui_in.value = 0 #deassert pushbuttons
+    # increment minutes by two
+    for _ in range(2):
+        # Set the input values you want to test
+        dut.ui_in.value = 1 #increment hours and minutes once
+        # Wait for ~4ms clock cycle to see the output values
+        await ClockCycles(dut.clk, 330)
+        dut.ui_in.value = 0 #deassert pushbuttons
+        # Wait for ~4ms clock cycle to see the output values
+        await ClockCycles(dut.clk, 330)
     
-    # Wait for one clock cycle to see the output values
-    await ClockCycles(dut.clk, 10)
+    # increment hours by 4
+    for _ in range(4):
+        # Set the input values you want to test
+        dut.ui_in.value = 2 #increment hours and minutes once
+        # Wait for one clock cycle to see the output values
+        await ClockCycles(dut.clk, 330)
+        dut.ui_in.value = 0 #deassert pushbuttons
+        # Wait for one clock cycle to see the output values
+        await ClockCycles(dut.clk, 330)
     
     # The following assersion is just an example of how to check the output values.
     # Change it to match the actual expected output of your module:
     assert dut.uio_out.value == 62
+    assert dut.uo_out.value == 207
+    await ClockCycles(dut.clk, 32)
+    assert dut.uio_out.value == 61
     assert dut.uo_out.value == 129
+    await ClockCycles(dut.clk, 32)
+    assert dut.uio_out.value == 59
+    assert dut.uo_out.value == 132
+    await ClockCycles(dut.clk, 32)
+    assert dut.uio_out.value == 55
+    assert dut.uo_out.value == 164
+    await ClockCycles(dut.clk, 32)
+    assert dut.uio_out.value == 47
+    assert dut.uo_out.value == 6
+    await ClockCycles(dut.clk, 32)
+    assert dut.uio_out.value == 31
+    assert dut.uo_out.value == 146
+    await ClockCycles(dut.clk, 32)
 
     # Keep testing the module by changing the input values, waiting for
     # one or more clock cycles, and asserting the expected output values.
