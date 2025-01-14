@@ -25,7 +25,7 @@ async def test_project(dut):
 
     dut._log.info("Test project behavior")
     # increment minutes by two
-    for _ in range(2):
+    for _ in range(59):
         # Set the input values you want to test
         dut.ui_in.value = 1 #increment hours and minutes once
         # Wait for ~4ms clock cycle to see the output values
@@ -35,7 +35,7 @@ async def test_project(dut):
         await ClockCycles(dut.clk, 330)
     
     # increment hours by 4
-    for _ in range(4):
+    for _ in range(23):
         # Set the input values you want to test
         dut.ui_in.value = 2 #increment hours and minutes once
         # Wait for one clock cycle to see the output values
